@@ -11,10 +11,12 @@ namespace ConsoleApp2
     {
         private List<IObserver> observers;
         private float speed;
+        private int overSpeedCounter;
 
         public Car()
         {
             observers = new List<IObserver>();
+            overSpeedCounter = 0;
         }
 
         public void RegisterObserver(IObserver observer)
@@ -40,6 +42,27 @@ namespace ConsoleApp2
             this.speed = speed;
             NotifyObservers();
         }
-    
-}
+
+        public void Boost()
+        {
+            for (int i = 10; i <= 200; i += 4)
+            {
+                SetSpeed(i);
+
+                if (i > 150)
+                {
+                    overSpeedCounter++;
+                    if (overSpeedCounter >= 10)
+                    {
+                        Console.WriteLine("Внимание! Превышение скорости более 150 км/ч длится слишком долго! Скорость равна " + speed + "км/ч");
+                        overSpeedCounter = 0;
+                    }
+                }
+                else
+                {
+                    overSpeedCounter = 0;
+                }
+            }
+        }
+    }
 }
